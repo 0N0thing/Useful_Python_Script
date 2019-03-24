@@ -11,6 +11,7 @@ def get_file_info(filePath):
     files = os.listdir(filePath)
     for f in files:
         filename, ext = os.path.splitext(os.path.basename(filePath + f))
+        ext = ext.split('.')[-1]
         info = os.path.getsize(filePath + f)
         if info < 1024:
             info = str(info) + 'B'
