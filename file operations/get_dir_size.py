@@ -1,32 +1,28 @@
-
+"""
+  function: output size of a given directory and its subdirectories
+  author: s1mple_zj
+  date: 2019-4-09
+"""
 import os
 
-def get_dir_size(dirPath):
-    files = os.scandir(dirPath)
+def get_root_file_size(dirPath):
+# check file and directory in a given directory, and then, calculate directory
+# size
     total_file_size = 0
-    file_counts = 0
-    dir_count = 0
+    files = os.scandir(dirPath)
     for f in files:
-        if not os.path.isfile(os.path.join(dirPath, f)):
-            dir_name, ext = os.path.splitext(os.path.basename(os.path.join(
-                dirPath, f)))
-            print('\nSubdirectories name: ' + str(dir_name))
-            dir_count += 1
-            print(str(dir_count))
-            get_dir_size(os.path.join(dirPath, f))
-        else:
+        if os.path.isfile(os.path.join(dirPath, f)):
             file_size = os.path.getsize(os.path.join(dirPath, f))
             total_file_size += file_size
             transferred_size = calc_file_size(total_file_size)
-            file_counts += 1
+        else:
+            dir_name, ext = os.path.splitext(os.path.basename(os.path.join(
+                dirPath, f)))
+            print('\nSubdirectory name: ' + str(dir_name))
+            sub_size = get_root_file_size(os.path.join(dirPath, f))
+            print('Subdirectory size: ' + str(sub_size))
 
-
-    # print('Counts of files except subdirectories: ' + str(file_counts))
-    # print('Directory size: ' + str(transferred_size))
-    print('counts: ' + str(file_counts))
-    print('size: ' + str(transferred_size))
-    return file_counts, transferred_size
-
+    return transferred_size
 
 def calc_file_size(size):
 # Change file size to a readable format.
@@ -40,10 +36,7 @@ def calc_file_size(size):
         size = str('%.2f' % (size / 1073741824)) + 'GB'
     return size
 
-test = input('input a path: ')
-print('Root directory: ' + str(test))
-root_dir_counts,  root_dir_size = get_dir_size(test)
-print('Number of root directory files: ' + str(root_dir_counts) +
-      '\tRoot directory size:' + str(root_dir_size))
-
-# get_dir_size(test)
+test = input('Input a target path: ')
+print('Root directory name: ' + test)
+root_dir_size = get_root_file_size(test)
+print('\nRoot directory size(without subdirectories): ' + str(root_dir_size))
