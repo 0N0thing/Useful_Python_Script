@@ -1,7 +1,12 @@
-
+"""
+  function: move target files to a given directory which less than given number
+  author: s1mple_zj
+  date: 2019-4-24
+"""
 import os, datetime, shutil
 
 def check_file_latest_edit_date(dirPath, days, desPath):
+# get file's edit day and check the difference to the given number
     files = os.scandir(dirPath)
     for f in files:
         if os.path.isfile(os.path.join(dirPath, f)):
@@ -17,11 +22,11 @@ def check_file_latest_edit_date(dirPath, days, desPath):
                 shutil.move(os.path.join(dirPath, filename), os.path.join(
                     desPath, filename))
                 # os.rename(os.path.join(dirPath, filename), os.path.join(
-                #  desPath, filename))
+                #   desPath, filename))
             else:
                 print('\n' + filename + ' don\'t need to move.')
 
-test = input('Input a source path: ')
+src_path = input('Input a source path: ')
 difference_days = input('Input a day number that files you want to move: ')
 dest_path = input('Input a path you want to move to: ')
-check_file_latest_edit_date(test, int(difference_days), dest_path)
+check_file_latest_edit_date(src_path, int(difference_days), dest_path)
